@@ -132,7 +132,7 @@ function create_config_file() {
 	NIC_PUB="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
 
 	echo "[Interface]
-Address = ${IPV4}/24, ${IPV6}/64
+Address = ${IPV4}/8, ${IPV6}/64
 ListenPort = ${PORT}
 PrivateKey = ${PRIVATE_KEY}" >"/etc/wireguard/${NIC_WG}.conf"
 
@@ -140,8 +140,8 @@ PrivateKey = ${PRIVATE_KEY}" >"/etc/wireguard/${NIC_WG}.conf"
 		FIREWALLD_IPV4=$(echo "${IPV4}" | cut -d"." -f1-3)".0"
 		FIREWALLD_IPV6=$(echo "${IPV6}" | sed 's/:[^:]*$/:0/')
 
-		echo "PostUp = firewall-cmd --add-port ${PORT}/udp && firewall-cmd --add-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4}/24 masquerade' && firewall-cmd --add-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6}/24 masquerade'
-PostDown = firewall-cmd --remove-port ${PORT}/udp && firewall-cmd --remove-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4}/24 masquerade' && firewall-cmd --remove-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6}/24 masquerade'" >>"/etc/wireguard/${NIC_WG}.conf"
+		echo "PostUp = firewall-cmd --add-port ${PORT}/udp && firewall-cmd --add-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4}/8 masquerade' && firewall-cmd --add-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6}/24 masquerade'
+PostDown = firewall-cmd --remove-port ${PORT}/udp && firewall-cmd --remove-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4}/8 masquerade' && firewall-cmd --remove-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6}/24 masquerade'" >>"/etc/wireguard/${NIC_WG}.conf"
 
 	else
 		echo "PostUp = iptables -A FORWARD -i ${NIC_PUB} -o ${NIC_WG} -j ACCEPT; iptables -A FORWARD -i ${NIC_WG} -j ACCEPT; iptables -t nat -A POSTROUTING -o ${NIC_PUB} -j MASQUERADE; ip6tables -A FORWARD -i ${NIC_WG} -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ${NIC_PUB} -j MASQUERADE
