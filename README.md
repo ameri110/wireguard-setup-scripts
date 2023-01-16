@@ -1,8 +1,6 @@
 # Setup WireGuard VPN like a piece of cake 🍰
 Here you can find some useful shell scripts in order to setup WireGuard VPN server on a Linux server as easily as possible.
 
-<p>&nbsp;</p>
-
 ## WireGuard
 There are a bunch of tunneling protocols in order to make a VPN. For example ~~[PPTP](https://www.bgocloud.com/knowledgebase/32/mikrotik-chr-how-to-setup-pptp-vpn-server.html)~~, ~~[L2TP](https://blog.johannfenech.com/mikrotik-l2tp-ipsec-vpn-server/)~~, [IKEv2/IPSec](https://github.com/jawj/IKEv2-setup), [OpenVPN](https://github.com/angristan/openvpn-install) and of course [WireGuard](https://www.wireguard.com/).
 
@@ -12,7 +10,6 @@ Among these all, WireGuard seems to be the most interesting. It is lite (about 4
 Here you can follow the instructions step by step to setup a VPN server using WireGuard.
 
 The scripts are tested on Ubuntu 20.04 but you can run them on Debian, Fedora, CentOS and Arch Linux.
-
 
 You can buy a cheap Linux IaaS from these cloud providers for the VPN server:
 Cloud Provider | Location | Price (starting at) | Traffic |
@@ -24,7 +21,7 @@ Hetzner | Germany (Finland did not work as VPN server for me!) | €3/month | 20
 ### Clone the repository
 Run the following commands to download the scripts:
 ```
-wget -O - https://github.com/xei/wireguard-setup-scripts/archive/master.tar.gz | tar xz
+wget -O - https://github.com/ameri110/wireguard-setup-scripts/archive/master.tar.gz | tar xz
 cd wireguard-setup-scripts-master
 ```
 
