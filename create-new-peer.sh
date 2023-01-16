@@ -7,6 +7,27 @@
 # https://github.com/xei/wireguard-setup-scripts
 # Some parts of this script are inspired from https://github.com/angristan/wireguard-install
 
+function ip2num() {
+	IP=$1
+	IPa=${IP%%.*}
+	IP=${IP#*.*}
+	IPb=${IP%%.*}
+	IP=${IP#*.*}
+	IPc=${IP%%.*}
+	IP=${IP#*.*}
+	IPd=${IP%%.*}
+	IPn=$((IPa*256**3+IPb*256**2+IPc*256+IPd))
+	echo $IPn
+}
+
+function num2ip() {
+	IPn=$1
+	IPa=$((IPn/256**3))
+	IPb=$((IPn%256**3/256**2))
+	IPc=$((IPn%256**2/256))
+	IPd=$((IPn%256))
+	echo $IPa.$IPb.$IPc.$IPd
+}
 
 function set_peer_name() {
 	if [ $# -eq 0 ]
@@ -49,8 +70,8 @@ function retrieve_wireguard_params() {
 
 	SUBNET_V4="${SERVER_PRIVATE_IPV4::-1}"
         SUBNET_V6="${SERVER_PRIVATE_IPV6::-1}"
-
-        IPV4="${SUBNET_V4}${PEER_ID}"
+	IPV4=$(num2ip $(($(ip2num $SERVER_PRIVATE_IPV4)+PEER_ID)))
+        #IPV4="${SUBNET_V4}${PEER_ID}"
         IPV6="${SUBNET_V6}${PEER_ID}"
 
 	DNS=${SERVER_PRIVATE_IPV4}
