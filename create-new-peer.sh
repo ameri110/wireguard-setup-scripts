@@ -88,7 +88,7 @@ function create_config_file() {
 
 	echo "[Interface]
 PrivateKey = ${PRIVATE_KEY}
-Address = ${IPV4}/24, ${IPV6}/64
+Address = ${IPV4}/8, ${IPV6}/64
 DNS = ${DNS}
 
 [Peer]
@@ -107,7 +107,7 @@ function bind_peer_to_server() {
 [Peer]
 PublicKey = ${PUBLIC_KEY}
 PresharedKey = ${PRESHARED_KEY}
-AllowedIPs = ${IPV4}/24, ${IPV6}/64" >> "/etc/wireguard/${NIC_WG}.conf"
+AllowedIPs = ${IPV4}/8, ${IPV6}/64" >> "/etc/wireguard/${NIC_WG}.conf"
 
 	systemctl restart wg-quick@${NIC_WG}
 	wg show ${NIC_WG}
