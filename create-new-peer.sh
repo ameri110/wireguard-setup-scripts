@@ -74,7 +74,8 @@ function retrieve_wireguard_params() {
         #IPV4="${SUBNET_V4}${PEER_ID}"
         IPV6="${SUBNET_V6}${PEER_ID}"
 
-	DNS=${SERVER_PRIVATE_IPV4}
+	#DNS=${SERVER_PRIVATE_IPV4}
+	DNS="8.8.8.8"
 }
 
 function generate_keys() {
