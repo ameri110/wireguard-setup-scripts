@@ -29,6 +29,24 @@ function num2ip() {
 	echo $IPa.$IPb.$IPc.$IPd
 }
 
+function add_colon() {
+    local input=$1
+    local length=${#input}
+
+    if (( length > 4 )); then
+        # Extract the last four characters and the rest of the string
+        last_four="${input: -4}"
+        rest="${input:0:length-4}"
+        
+        # Concatenate the modified string with a colon and print it
+        modified_string="$rest:$last_four"
+        echo "$modified_string"
+    else
+        # If the string is not longer than four characters, print it as it is
+        echo "$input"
+    fi
+}
+
 function set_peer_name() {
 	if [ $# -eq 0 ]
 	then
@@ -68,11 +86,13 @@ function retrieve_peer_id() {
 function retrieve_wireguard_params() {
 	source /etc/wireguard/params
 
+ 	PEER_ID_HEX=$( printf "%x" $PEER_ID )
+  	PEER_ID_HEX_COLON=$(add_colon $PEER_ID_HEX)
+
 	SUBNET_V4="${SERVER_PRIVATE_IPV4::-1}"
         SUBNET_V6="${SERVER_PRIVATE_IPV6::-1}"
 	IPV4=$(num2ip $(($(ip2num $SERVER_PRIVATE_IPV4)+PEER_ID)))
-        #IPV4="${SUBNET_V4}${PEER_ID}"
-        IPV6="${SUBNET_V6}${PEER_ID}"
+        IPV6="${SUBNET_V6}${PEER_ID_HEX_COLON}"
 
 	#DNS=${SERVER_PRIVATE_IPV4}
 	DNS="8.8.8.8"
